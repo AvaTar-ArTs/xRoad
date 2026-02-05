@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product 04: Ollama Local Manager - Privacy + Zero Cloud Costs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .breadcrumb {
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .breadcrumb a {
+            color: #003D82;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb a:hover {
+            color: #00d9ff;
+            text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #6b21a8 0%, #a855f7 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+            margin-bottom: 15px;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+            font-size: 0.95em;
+        }
+
+        .hero-feature {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 20px;
+            border-radius: 6px;
+            border-left: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Product Overview */
+        .overview {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .overview h2 {
+            color: #6b21a8;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #a855f7;
+            padding-bottom: 15px;
+        }
+
+        .overview-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .overview-text p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: #a855f7;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Tiers Section */
+        .tiers-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tiers-section h2 {
+            color: #6b21a8;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #a855f7;
+            padding-bottom: 15px;
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .tier-card {
+            background: linear-gradient(135deg, #f3e8ff 0%, #ede9fe 100%);
+            border: 2px solid #ddd6fe;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-5px);
+            border-color: #a855f7;
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.15);
+        }
+
+        .tier-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #6b21a8;
+            margin-bottom: 8px;
+        }
+
+        .tier-desc {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .tier-price {
+            font-size: 1.8em;
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .tier-features {
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 12px;
+            list-style: none;
+            text-align: left;
+        }
+
+        .tier-features li {
+            padding: 4px 0;
+        }
+
+        /* Platform Pricing */
+        .platform-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .platform-section h2 {
+            color: #6b21a8;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #a855f7;
+            padding-bottom: 15px;
+        }
+
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .platform-card {
+            background: linear-gradient(135deg, #f3e8ff 0%, #ede9fe 100%);
+            border: 2px solid #ddd6fe;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .platform-name {
+            font-size: 1.3em;
+            color: #6b21a8;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .platform-tiers {
+            text-align: left;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .platform-tier {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+        }
+
+        .platform-tier:last-child {
+            border-bottom: none;
+        }
+
+        .tier-name-small {
+            color: #6b21a8;
+            font-weight: 500;
+        }
+
+        .tier-price-small {
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .platform-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #6b21a8 0%, #a855f7 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+
+        .platform-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(107, 33, 168, 0.3);
+        }
+
+        /* Use Cases */
+        .use-cases {
+            background: linear-gradient(135deg, #f3e8ff 0%, #ede9fe 100%);
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border-left: 5px solid #a855f7;
+        }
+
+        .use-cases h2 {
+            color: #6b21a8;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .use-case {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .use-case-title {
+            color: #6b21a8;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .use-case-desc {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #6b21a8 0%, #a855f7 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cta-section h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #6b21a8;
+            padding: 15px 35px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin: 10px;
+            border: 2px solid white;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            margin: 0 15px;
+            color: #003D82;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #a855f7;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .overview-content {
+                grid-template-columns: 1fr;
+            }
+
+            .tiers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .platforms-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Dashboard</a> / <a href="products.html">Products</a> / <strong>Product 04</strong>
+        </div>
+
+        <div class="hero">
+            <h1>🔒 Product 04: Ollama Local Manager</h1>
+            <p class="hero-subtitle">Privacy + Zero Cloud Costs</p>
+            <div class="hero-features">
+                <div class="hero-feature">✓ Run Locally</div>
+                <div class="hero-feature">✓ Privacy First</div>
+                <div class="hero-feature">✓ $0 Cloud Costs</div>
+                <div class="hero-feature">✓ Full Control</div>
+            </div>
+        </div>
+
+        <div class="overview">
+            <h2>Complete Solution Overview</h2>
+            <div class="overview-content">
+                <div class="overview-text">
+                    <p>
+                        Product 04 gives you complete control over your AI infrastructure. Run models locally on your hardware with Ollama Manager - no cloud providers, no data leaving your servers, zero monthly cloud costs.
+                    </p>
+                    <p>
+                        Perfect for enterprises with data privacy requirements, organizations with strict compliance needs, or teams who want to avoid AI vendor lock-in completely.
+                    </p>
+                </div>
+                <div>
+                    <ul class="features-list">
+                        <li>Run any model locally (Llama 2, Mistral, etc.)</li>
+                        <li>Complete data privacy and control</li>
+                        <li>Zero cloud infrastructure costs</li>
+                        <li>Easy model switching and management</li>
+                        <li>Perfect for testing and development</li>
+                        <li>On-premises deployment options</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tiers-section">
+            <h2>6 Evolution Tiers (v1-v6)</h2>
+            <div class="tiers-grid">
+                <div class="tier-card">
+                    <div class="tier-name">v1</div>
+                    <div class="tier-desc">Original Positioning</div>
+                    <div class="tier-price">$45</div>
+                    <ul class="tier-features">
+                        <li>Basic features</li>
+                        <li>Standard support</li>
+                        <li>Quick start guide</li>
+                    </ul>
+                </div>
+
+                <div class="tier-card">
+                    <div class="tier-name">v2</div>
+                    <div class="tier-desc">A/B Test Angles</div>
+                    <div class="tier-price">$49</div>
+                    <ul class="tier-features">
+                        <li>Enhanced messaging</li>
+                        <li>Email templates</li>
+                        <li>Setup assistance</li>
+                    </ul>
+                </div>
+
+                <div class="tier-card">
+                    <div class="tier-name">v3</div>
+                    <div class="tier-desc">Psychology-Driven</div>
+                    <div class="tier-price">$52</div>
+                    <ul class="tier-features">
+                        <li>Conversion optimized</li>
+                        <li>Social proof</li>
+                        <li>Video tutorials</li>
+                    </ul>
+                </div>
+
+                <div class="tier-card">
+                    <div class="tier-name">v4</div>
+                    <div class="tier-desc">Premium Tier</div>
+                    <div class="tier-price">$55</div>
+                    <ul class="tier-features">
+                        <li>Dashboard included</li>
+                        <li>Team features</li>
+                        <li>Priority support</li>
+                    </ul>
+                </div>
+
+                <div class="tier-card">
+                    <div class="tier-name">v5</div>
+                    <div class="tier-desc">Strategic Tier</div>
+                    <div class="tier-price">$60</div>
+                    <ul class="tier-features">
+                        <li>Advanced orchestration</li>
+                        <li>Custom integration</li>
+                        <li>Strategy calls</li>
+                    </ul>
+                </div>
+
+                <div class="tier-card">
+                    <div class="tier-name">v6</div>
+                    <div class="tier-desc">Ultimate Mastery</div>
+                    <div class="tier-price">$65</div>
+                    <ul class="tier-features">
+                        <li>Everything included</li>
+                        <li>Enterprise support</li>
+                        <li>Custom SLAs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="platform-section">
+            <h2>Pricing by Platform</h2>
+            <div class="platforms-grid">
+                <div class="platform-card">
+                    <div class="platform-name">🛒 Gumroad</div>
+                    <div class="platform-tiers">
+                        <div class="platform-tier">
+                            <span class="tier-name-small">v1-v3</span>
+                            <span class="tier-price-small">$45-52</span>
+                        </div>
+                        <div class="platform-tier">
+                            <span class="tier-name-small">v4-v5</span>
+                            <span class="tier-price-small">$55-60</span>
+                        </div>
+                        <div class="platform-tier">
+                            <span class="tier-name-small">v6 Ultimate</span>
+                            <span class="tier-price-small">$65</span>
+                        </div>
+                    </div>
+                    <button class="platform-button" onclick="alert('View on Gumroad')">View on Gumroad</button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="platform-name">💻 Codester</div>
+                    <div class="platform-tiers">
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Basic</span>
+                            <span class="tier-price-small">$45-52</span>
+                        </div>
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Professional</span>
+                            <span class="tier-price-small">$55-60</span>
+                        </div>
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Enterprise</span>
+                            <span class="tier-price-small">$65</span>
+                        </div>
+                    </div>
+                    <button class="platform-button" onclick="alert('View on Codester')">View on Codester</button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="platform-name">💳 Payhip</div>
+                    <div class="platform-tiers">
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Starter</span>
+                            <span class="tier-price-small">$45-52</span>
+                        </div>
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Professional</span>
+                            <span class="tier-price-small">$55-60</span>
+                        </div>
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Premium</span>
+                            <span class="tier-price-small">$65</span>
+                        </div>
+                    </div>
+                    <button class="platform-button" onclick="alert('View on Payhip')">View on Payhip</button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="platform-name">🎁 Sellfy</div>
+                    <div class="platform-tiers">
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Bundle Prices</span>
+                            <span class="tier-price-small">$45-65</span>
+                        </div>
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Team Options</span>
+                            <span class="tier-price-small">Available</span>
+                        </div>
+                        <div class="platform-tier">
+                            <span class="tier-name-small">Support</span>
+                            <span class="tier-price-small">Included</span>
+                        </div>
+                    </div>
+                    <button class="platform-button" onclick="alert('View on Sellfy')">View on Sellfy</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="use-cases">
+            <h2>Perfect For</h2>
+            <div class="use-cases-grid">
+                <div class="use-case">
+                    <div class="use-case-title">Enterprise Security</div>
+                    <div class="use-case-desc">Organizations with strict data governance and compliance requirements</div>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-title">Development Teams</div>
+                    <div class="use-case-desc">Test models locally before deployment with zero setup cost</div>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-title">Privacy-First Teams</div>
+                    <div class="use-case-desc">Keep all data on-premises with complete control</div>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-title">Cost Optimization</div>
+                    <div class="use-case-desc">Eliminate cloud AI provider costs completely</div>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-title">Vendor Independence</div>
+                    <div class="use-case-desc">Never be locked into one provider again</div>
+                </div>
+                <div class="use-case">
+                    <div class="use-case-title">Hybrid Deployments</div>
+                    <div class="use-case-desc">Run locally in production, fallback to cloud when needed</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Take Control?</h2>
+            <p>Get complete privacy and zero cloud costs with Ollama Manager</p>
+            <button class="cta-button" onclick="document.querySelector('.platform-section').scrollIntoView({behavior: 'smooth'})">Choose Your Tier</button>
+            <button class="cta-button" onclick="window.location.href='quiz.html'">Take Quiz for Recommendation</button>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">← Main Dashboard</a>
+            <a href="products.html">All Products</a>
+            <a href="bundle-flexibility.html">Related: Flexibility Bundle</a>
+            <a href="bundle-mastery.html">Complete Mastery Bundle</a>
+        </div>
+    </div>
+</body>
+</html>

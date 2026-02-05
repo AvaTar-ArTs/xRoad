@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Optimizer Bundle - Cut API Costs by 40%</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .nav-top {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin: 0 15px;
+            color: #003D82;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #00d9ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #003D82 0%, #00d9ff 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0, 61, 130, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+        }
+
+        .hero .savings-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.3em;
+            margin: 20px 0;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        /* Bundle Composition */
+        .bundle-composition {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .bundle-composition h2 {
+            color: #003D82;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            padding-bottom: 15px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .product-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #00d9ff;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 217, 255, 0.2);
+        }
+
+        .product-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-size: 1.4em;
+            color: #003D82;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .product-price {
+            font-size: 1.8em;
+            color: #00d9ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .individual-price {
+            font-size: 0.85em;
+            color: #999;
+            text-decoration: line-through;
+            margin-bottom: 10px;
+        }
+
+        /* Pricing Comparison */
+        .pricing-section {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-section h2 {
+            color: #003D82;
+            font-size: 2em;
+            margin-bottom: 40px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            padding-bottom: 15px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, #003D82 0%, #00d9ff 100%);
+            color: white;
+            border-color: #00d9ff;
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 61, 130, 0.3);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .price-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .price-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .pricing-card.featured .price-value {
+            color: #ffffff;
+        }
+
+        .savings-amount {
+            display: inline-block;
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            margin-top: 10px;
+            border: 1px solid #4caf50;
+        }
+
+        .pricing-card.featured .savings-amount {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Platform Options */
+        .platforms-section {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .platforms-section h2 {
+            color: #003D82;
+            font-size: 2em;
+            margin-bottom: 40px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            padding-bottom: 15px;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .platform-card {
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+        .platform-card:hover {
+            border-color: #00d9ff;
+            box-shadow: 0 8px 20px rgba(0, 217, 255, 0.15);
+        }
+
+        .platform-name {
+            font-size: 1.5em;
+            color: #003D82;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .platform-price {
+            font-size: 2em;
+            color: #00d9ff;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .platform-features {
+            text-align: left;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .platform-features li {
+            margin-bottom: 8px;
+            list-style: none;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .platform-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00d9ff;
+            font-weight: bold;
+        }
+
+        .platform-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #003D82 0%, #00d9ff 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+
+        .platform-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 61, 130, 0.3);
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 50px;
+            border-radius: 12px;
+            margin-bottom: 50px;
+            border-left: 5px solid #00d9ff;
+        }
+
+        .benefits-section h2 {
+            color: #003D82;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .benefit-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .benefit-title {
+            color: #003D82;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .benefit-desc {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        /* ROI Calculator */
+        .roi-section {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .roi-section h2 {
+            color: #003D82;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #00d9ff;
+            padding-bottom: 15px;
+        }
+
+        .slider-group {
+            margin-bottom: 30px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #003D82;
+            font-weight: 500;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e0e7ff;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #003D82 0%, #00d9ff 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 61, 130, 0.3);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #003D82 0%, #00d9ff 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 61, 130, 0.3);
+        }
+
+        .roi-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .roi-result {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #00d9ff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .roi-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .roi-value {
+            font-size: 2em;
+            color: #00d9ff;
+            font-weight: bold;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #003D82 0%, #00d9ff 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .cta-section h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button.primary {
+            background: white;
+            color: #003D82;
+        }
+
+        .cta-button.primary:hover {
+            background: #f0f9ff;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        footer a {
+            color: #003D82;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: #00d9ff;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .bundle-composition,
+            .pricing-section,
+            .platforms-section,
+            .roi-section {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-top">
+            <a href="index.html" class="nav-link">← Main Dashboard</a>
+            <a href="products.html" class="nav-link">All Products</a>
+            <a href="calculator.html" class="nav-link">Revenue Calculator</a>
+        </div>
+
+        <div class="hero">
+            <h1>💰 Cost Optimizer Bundle</h1>
+            <div class="savings-badge">Save $20 vs buying separately</div>
+            <p>Cut your API costs by 40% with intelligent caching, cost tracking, and reliable parsing</p>
+        </div>
+
+        <div class="bundle-composition">
+            <h2>What's Included</h2>
+            <div class="products-grid">
+                <div class="product-box">
+                    <div class="product-number">03</div>
+                    <div class="product-name">GPT Wrapper</div>
+                    <div class="individual-price">Individual: $45</div>
+                    <div class="product-desc">Intelligent API caching and request optimization to dramatically reduce costs</div>
+                    <div class="product-price">$45</div>
+                </div>
+
+                <div class="product-box">
+                    <div class="product-number">08</div>
+                    <div class="product-name">Cost Calculator</div>
+                    <div class="individual-price">Individual: $39</div>
+                    <div class="product-desc">Real-time visibility into costs with per-model and per-feature breakdowns</div>
+                    <div class="product-price">$39</div>
+                </div>
+
+                <div class="product-box">
+                    <div class="product-number">09</div>
+                    <div class="product-name">Response Parser</div>
+                    <div class="individual-price">Individual: $35</div>
+                    <div class="product-desc">Reliable output parsing to eliminate retries and wasted API calls</div>
+                    <div class="product-price">$35</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 30px; border-radius: 8px;">
+                <div style="font-size: 1.2em; color: #666; margin-bottom: 10px;">Individual Total:</div>
+                <div style="font-size: 2.5em; color: #999; text-decoration: line-through;">$119</div>
+                <div style="font-size: 1.2em; color: #666; margin-top: 15px; margin-bottom: 10px;">Bundle Price:</div>
+                <div style="font-size: 3em; color: #00d9ff; font-weight: bold;">$99</div>
+                <div style="font-size: 1.1em; color: #4caf50; margin-top: 15px; font-weight: bold;">💚 Save $20 (17% Discount)</div>
+            </div>
+        </div>
+
+        <div class="benefits-section">
+            <h2>Key Benefits</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-title">40% Cost Reduction</div>
+                    <div class="benefit-desc">Intelligent caching and batching dramatically cuts API costs without sacrificing quality</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Complete Visibility</div>
+                    <div class="benefit-desc">Know exactly where your budget is going with per-model and per-feature cost tracking</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Reliable Outputs</div>
+                    <div class="benefit-desc">Structured parsing ensures first-time success, eliminating expensive retries</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">For All Team Sizes</div>
+                    <div class="benefit-desc">Works for startups ($500/month AI spend) to enterprises ($50K+/month)</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Zero Lock-In</div>
+                    <div class="benefit-desc">Works with any AI provider - OpenAI, Claude, Cohere, local models, and more</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">Monthly Savings Report</div>
+                    <div class="benefit-desc">Get detailed breakdowns of what you're saving vs your previous spend</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="roi-section">
+            <h2>Calculate Your Savings</h2>
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>Current Monthly API Spend</span>
+                    <span id="spendValue">$2,000</span>
+                </div>
+                <input type="range" id="spendSlider" min="500" max="50000" value="2000" step="500">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>Expected Cost Reduction %</span>
+                    <span id="reductionValue">40%</span>
+                </div>
+                <input type="range" id="reductionSlider" min="20" max="60" value="40" step="5">
+            </div>
+
+            <div class="roi-results">
+                <div class="roi-result">
+                    <div class="roi-label">Monthly Savings</div>
+                    <div class="roi-value" id="monthlySavings">$800</div>
+                </div>
+                <div class="roi-result">
+                    <div class="roi-label">Annual Savings</div>
+                    <div class="roi-value" id="annualSavings">$9,600</div>
+                </div>
+                <div class="roi-result">
+                    <div class="roi-label">Payback Period</div>
+                    <div class="roi-value" id="paybackPeriod">1.5 weeks</div>
+                </div>
+                <div class="roi-result">
+                    <div class="roi-label">ROI (Year 1)</div>
+                    <div class="roi-value" id="roiValue">9,600%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing-section">
+            <h2>Get Started On Your Platform</h2>
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <div class="platform-name">🛒 Gumroad</div>
+                    <div class="platform-price">$99</div>
+                    <ul class="platform-features">
+                        <li>Instant access</li>
+                        <li>Lifetime updates</li>
+                        <li>Email support</li>
+                        <li>30-day money back</li>
+                    </ul>
+                    <button class="platform-btn" onclick="window.open('#gumroad-bundle-optimizer')">Purchase Bundle</button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="platform-name">💻 Codester</div>
+                    <div class="platform-price">$49-129</div>
+                    <ul class="platform-features">
+                        <li>3 tier options</li>
+                        <li>Developer focused</li>
+                        <li>Flexible pricing</li>
+                        <li>Professional support</li>
+                    </ul>
+                    <button class="platform-btn" onclick="window.open('#codester-bundle-optimizer')">View Tiers</button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="platform-name">💳 Payhip</div>
+                    <div class="platform-price">$99</div>
+                    <ul class="platform-features">
+                        <li>14-day free trial</li>
+                        <li>Try before buy</li>
+                        <li>Quick setup</li>
+                        <li>Instant activation</li>
+                    </ul>
+                    <button class="platform-btn" onclick="window.open('#payhip-bundle-optimizer')">Start Trial</button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="platform-name">🎁 Sellfy</div>
+                    <div class="platform-price">$99</div>
+                    <ul class="platform-features">
+                        <li>Email support</li>
+                        <li>Video training</li>
+                        <li>Setup assistance</li>
+                        <li>Bundle focused</li>
+                    </ul>
+                    <button class="platform-btn" onclick="window.open('#sellfy-bundle-optimizer')">Get Bundle</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Cut Your Costs?</h2>
+            <p>Join hundreds of teams already saving thousands monthly with Cost Optimizer Bundle</p>
+            <button class="cta-button primary" onclick="document.querySelector('.pricing-section').scrollIntoView({behavior: 'smooth'})">Choose Your Platform</button>
+            <button class="cta-button" onclick="window.location.href='quiz.html'">Not Sure? Take the Quiz</button>
+        </div>
+
+        <footer>
+            <p><strong>Other Bundles:</strong>
+                <a href="bundle-optimizer.html">Cost Optimizer</a> |
+                <a href="bundle-flexibility.html">Platform Flexibility</a> |
+                <a href="bundle-intelligence.html">Intelligence & Real-Time</a> |
+                <a href="bundle-mastery.html">Complete Mastery</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                <a href="index.html">← Back to Dashboard</a> |
+                <a href="calculator.html">Revenue Calculator</a>
+            </p>
+            <p style="margin-top: 20px; color: #999; font-size: 0.85em;">
+                Cost Optimizer Bundle © 2026 | All rights reserved
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const spendSlider = document.getElementById('spendSlider');
+        const reductionSlider = document.getElementById('reductionSlider');
+        const spendValue = document.getElementById('spendValue');
+        const reductionValue = document.getElementById('reductionValue');
+        const monthlySavings = document.getElementById('monthlySavings');
+        const annualSavings = document.getElementById('annualSavings');
+        const paybackPeriod = document.getElementById('paybackPeriod');
+        const roiValue = document.getElementById('roiValue');
+
+        function updateCalculations() {
+            const spend = parseInt(spendSlider.value);
+            const reduction = parseInt(reductionSlider.value);
+
+            spendValue.textContent = '$' + spend.toLocaleString();
+            reductionValue.textContent = reduction + '%';
+
+            const monthly = Math.round(spend * reduction / 100);
+            const annual = monthly * 12;
+            const bundlePrice = 99;
+            const payback = (bundlePrice / monthly * 7).toFixed(1);
+            const roi = Math.round((annual / bundlePrice) * 100);
+
+            monthlySavings.textContent = '$' + monthly.toLocaleString();
+            annualSavings.textContent = '$' + annual.toLocaleString();
+            paybackPeriod.textContent = payback + ' days';
+            roiValue.textContent = roi.toLocaleString() + '%';
+        }
+
+        spendSlider.addEventListener('input', updateCalculations);
+        reductionSlider.addEventListener('input', updateCalculations);
+
+        updateCalculations();
+    </script>
+</body>
+</html>

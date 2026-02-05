@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Recommendation Quiz - Find Your Perfect Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #003D82 0%, #00d9ff 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .quiz-body {
+            padding: 40px 30px;
+        }
+
+        .question {
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question h2 {
+            color: #003D82;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #00d9ff;
+            background: #f0f9ff;
+            transform: translateX(5px);
+        }
+
+        .option input {
+            display: none;
+        }
+
+        .option input:checked + label {
+            color: #003D82;
+            font-weight: bold;
+        }
+
+        .option:has(input:checked) {
+            background: #e0f2fe;
+            border-color: #00d9ff;
+        }
+
+        .option label {
+            cursor: pointer;
+            display: block;
+        }
+
+        .progress-bar {
+            background: #e0e7ff;
+            height: 4px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #003D82 0%, #00d9ff 100%);
+            color: white;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 61, 130, 0.3);
+        }
+
+        .btn-back {
+            background: #f0f9ff;
+            color: #003D82;
+            border: 2px solid #00d9ff;
+        }
+
+        .btn-back:hover {
+            background: #e0f2fe;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #00d9ff;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .result-title {
+            color: #003D82;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .result-price {
+            background: white;
+            color: #00d9ff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .result-tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tier-badge {
+            background: white;
+            border: 1px solid #00d9ff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #003D82;
+        }
+
+        .results-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .results-summary h2 {
+            color: #003D82;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-list {
+            list-style: none;
+        }
+
+        .recommendation-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e7ff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recommendation-list li:last-child {
+            border-bottom: none;
+        }
+
+        .recommendation-list li::before {
+            content: "✓";
+            color: #00d9ff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .nav-links a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <h1>🎯 Find Your Perfect Product</h1>
+                <p>Smart AI Recommendation Quiz</p>
+            </div>
+
+            <div class="quiz-body">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+
+                <!-- Question 1 -->
+                <div class="question active" data-question="1">
+                    <h2>What's your primary challenge?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="challenge" value="cost">
+                            <span>💰 High AI API costs are killing my budget</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="challenge" value="privacy">
+                            <span>🔒 Data privacy & compliance concerns</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="challenge" value="realtime">
+                            <span>⚡ Need real-time data integration</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="challenge" value="flexibility">
+                            <span>🔄 Locked into one AI provider</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="challenge" value="reliability">
+                            <span>🛡️ Need guaranteed uptime/reliability</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question" data-question="2">
+                    <h2>What scale are you operating at?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="scale" value="startup">
+                            <span>🚀 Startup (under $10K/month AI spend)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="scale" value="growth">
+                            <span>📈 Growth stage ($10-50K/month)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="scale" value="enterprise">
+                            <span>🏢 Enterprise ($50K+/month)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="scale" value="global">
+                            <span>🌍 Global operations (multi-region)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question" data-question="3">
+                    <h2>What's your technical depth?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="technical" value="beginner">
+                            <span>🎓 Just learning (v1-v3 tier)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="technical" value="intermediate">
+                            <span>💻 Developer/technical (v4-v5 tier)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="technical" value="advanced">
+                            <span>🔬 Advanced/Enterprise (v6 ultimate)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question" data-question="4">
+                    <h2>What's your main use case?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="usecase" value="cost">
+                            <span>💸 Cost optimization & tracking</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="usecase" value="output">
+                            <span>📊 Output parsing & reliability</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="usecase" value="global">
+                            <span>🌐 Global/multilingual support</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="usecase" value="control">
+                            <span>⚙️ Infrastructure control & privacy</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="usecase" value="intelligence">
+                            <span>🧠 Real-time intelligence & decisions</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="results" id="results">
+                    <div class="results-summary">
+                        <h2>🎉 Your Recommended Products</h2>
+                        <ul class="recommendation-list" id="recommendationList"></ul>
+                    </div>
+                    <div id="resultCards"></div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-back" onclick="previousQuestion()">← Back</button>
+                    <button class="btn-next" onclick="nextQuestion()">Next →</button>
+                </div>
+            </div>
+
+            <div class="nav-links">
+                <a href="index.html">← Main Dashboard</a>
+                <a href="tiers.html">View All Tiers</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 4;
+
+        const recommendations = {
+            'cost': { product: '08', name: 'Cost Calculator', desc: 'Complete cost mastery & visibility', price: '$39-59' },
+            'privacy': { product: '04', name: 'Ollama Manager', desc: 'Local AI privacy & control', price: '$45-65' },
+            'realtime': { product: '06', name: 'Grok Client', desc: 'Real-time market intelligence', price: '$39-59' },
+            'flexibility': { product: '07', name: 'Multi-Orchestrator', desc: 'Vendor-independent infrastructure', price: '$45-69' },
+            'reliability': { product: '09', name: 'Response Parser', desc: 'Output reliability & parsing', price: '$29-49' },
+            'global': { product: '05', name: 'Qwen Integration', desc: 'Multilingual global expansion', price: '$39-59' }
+        };
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        function showQuestion(num) {
+            document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+            document.querySelector(`[data-question="${num}"]`).classList.add('active');
+            document.getElementById('results').classList.remove('active');
+
+            document.querySelector('.btn-back').style.display = num === 1 ? 'none' : 'block';
+            document.querySelector('.btn-next').textContent = num === totalQuestions ? 'Get Recommendations' : 'Next →';
+
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function showResults() {
+            const challenge = document.querySelector('input[name="challenge"]:checked')?.value;
+            const usecase = document.querySelector('input[name="usecase"]:checked')?.value;
+            const technical = document.querySelector('input[name="technical"]:checked')?.value;
+
+            let recommended = [];
+
+            if (challenge) recommended.push(recommendations[challenge]);
+            if (usecase && usecase !== challenge) recommended.push(recommendations[usecase]);
+
+            // Remove duplicates
+            recommended = recommended.filter((item, index, self) =>
+                index === self.findIndex(t => t.product === item.product)
+            );
+
+            if (recommended.length === 0) {
+                recommended.push(recommendations['cost']);
+            }
+
+            let html = '';
+            recommended.forEach(rec => {
+                html += `
+                    <div class="result-card">
+                        <div class="result-title">Product ${rec.product}: ${rec.name}</div>
+                        <div class="result-description">${rec.desc}</div>
+                        <div class="result-price">${rec.price}</div>
+                        <div class="result-tiers">
+                            <div class="tier-badge">v4 Premium</div>
+                            <div class="tier-badge">v5 Strategic</div>
+                            <div class="tier-badge">v6 Ultimate</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('recommendationList').innerHTML = recommended.map(r =>
+                `<li><strong>${r.name}</strong> - ${r.desc}</li>`
+            ).join('');
+
+            document.getElementById('resultCards').innerHTML = html;
+            document.getElementById('results').classList.add('active');
+            document.querySelector('.question.active').classList.remove('active');
+            document.querySelector('.btn-back').style.display = 'block';
+            document.querySelector('.btn-next').style.display = 'none';
+            updateProgress();
+        }
+
+        // Initialize
+        showQuestion(1);
+    </script>
+</body>
+</html>

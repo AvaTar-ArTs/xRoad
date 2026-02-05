@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product 05: Qwen Integration - 75% Cheaper, Multilingual</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .breadcrumb { margin-bottom: 30px; font-size: 0.9em; }
+        .breadcrumb a { color: #003D82; text-decoration: none; font-weight: 500; }
+        .breadcrumb a:hover { color: #00d9ff; text-decoration: underline; }
+        .hero { background: linear-gradient(135deg, #047857 0%, #0891b2 100%); color: white; padding: 60px 40px; border-radius: 12px; text-align: center; margin-bottom: 50px; box-shadow: 0 10px 30px rgba(4, 120, 87, 0.2); }
+        .hero h1 { font-size: 2.8em; margin-bottom: 15px; }
+        .hero-subtitle { font-size: 1.2em; opacity: 0.95; margin-bottom: 15px; }
+        .hero-features { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 25px; font-size: 0.95em; }
+        .hero-feature { background: rgba(255, 255, 255, 0.15); padding: 12px 20px; border-radius: 6px; border-left: 3px solid rgba(255, 255, 255, 0.5); }
+        .overview, .platform-section, .use-cases { background: white; padding: 40px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .overview h2, .platform-section h2 { color: #047857; font-size: 1.8em; margin-bottom: 20px; border-bottom: 3px solid #0891b2; padding-bottom: 15px; }
+        .overview-content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+        .overview-text p { color: #666; line-height: 1.8; margin-bottom: 15px; }
+        .features-list { list-style: none; }
+        .features-list li { padding: 12px 0; border-bottom: 1px solid #eee; color: #555; display: flex; align-items: center; gap: 12px; }
+        .features-list li::before { content: "✓"; color: #0891b2; font-weight: bold; font-size: 1.2em; }
+        .tiers-section { background: white; padding: 40px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .tiers-section h2 { color: #047857; font-size: 1.8em; margin-bottom: 30px; text-align: center; border-bottom: 3px solid #0891b2; padding-bottom: 15px; }
+        .tiers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+        .tier-card { background: linear-gradient(135deg, #d1fae5 0%, #ccfbf1 100%); border: 2px solid #a7f3d0; border-radius: 10px; padding: 25px; text-align: center; transition: all 0.3s; }
+        .tier-card:hover { transform: translateY(-5px); border-color: #0891b2; box-shadow: 0 10px 25px rgba(4, 120, 87, 0.15); }
+        .tier-name { font-size: 1.1em; font-weight: bold; color: #047857; margin-bottom: 8px; }
+        .tier-desc { font-size: 0.85em; color: #666; margin-bottom: 12px; }
+        .tier-price { font-size: 1.8em; color: #0891b2; font-weight: bold; }
+        .tier-features { font-size: 0.75em; color: #666; margin-top: 12px; list-style: none; text-align: left; }
+        .tier-features li { padding: 4px 0; }
+        .platforms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .platform-card { background: linear-gradient(135deg, #d1fae5 0%, #ccfbf1 100%); border: 2px solid #a7f3d0; border-radius: 10px; padding: 25px; text-align: center; }
+        .platform-name { font-size: 1.3em; color: #047857; font-weight: bold; margin-bottom: 15px; }
+        .platform-tiers { text-align: left; font-size: 0.9em; margin-bottom: 20px; }
+        .platform-tier { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(4, 120, 87, 0.1); }
+        .platform-tier:last-child { border-bottom: none; }
+        .tier-name-small { color: #047857; font-weight: 500; }
+        .tier-price-small { color: #0891b2; font-weight: bold; }
+        .platform-button { display: inline-block; background: linear-gradient(135deg, #047857 0%, #0891b2 100%); color: white; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; transition: all 0.3s; border: none; cursor: pointer; font-size: 0.95em; }
+        .platform-button:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(4, 120, 87, 0.3); }
+        .use-cases { background: linear-gradient(135deg, #d1fae5 0%, #ccfbf1 100%); border-left: 5px solid #0891b2; }
+        .use-cases h2 { color: #047857; font-size: 1.8em; margin-bottom: 25px; }
+        .use-cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .use-case { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .use-case-title { color: #047857; font-weight: bold; margin-bottom: 8px; }
+        .use-case-desc { color: #666; font-size: 0.9em; line-height: 1.6; }
+        .cta-section { background: linear-gradient(135deg, #047857 0%, #0891b2 100%); color: white; padding: 50px; border-radius: 12px; text-align: center; margin-bottom: 40px; }
+        .cta-section h2 { font-size: 2em; margin-bottom: 15px; }
+        .cta-section p { font-size: 1.1em; margin-bottom: 25px; opacity: 0.95; }
+        .cta-button { display: inline-block; background: white; color: #047857; padding: 15px 35px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: all 0.3s; margin: 10px; cursor: pointer; font-size: 1em; border: 2px solid white; }
+        .cta-button:hover { background: rgba(255, 255, 255, 0.1); color: white; }
+        .nav-links { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
+        .nav-links a { display: inline-block; margin: 0 15px; color: #003D82; text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: #0891b2; text-decoration: underline; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2em; } .overview-content { grid-template-columns: 1fr; } .tiers-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb"><a href="index.html">Dashboard</a> / <a href="products.html">Products</a> / <strong>Product 05</strong></div>
+        <div class="hero">
+            <h1>🌍 Product 05: Qwen Integration</h1>
+            <p class="hero-subtitle">75% Cheaper, Multilingual</p>
+            <div class="hero-features">
+                <div class="hero-feature">✓ 75% Cost Reduction</div>
+                <div class="hero-feature">✓ 100+ Languages</div>
+                <div class="hero-feature">✓ Global Reach</div>
+                <div class="hero-feature">✓ Enterprise Grade</div>
+            </div>
+        </div>
+        <div class="overview">
+            <h2>Complete Solution Overview</h2>
+            <div class="overview-content">
+                <div class="overview-text">
+                    <p>Product 05 brings Qwen's advanced multilingual AI to your applications at a fraction of typical costs. Get enterprise-grade AI capabilities in 100+ languages at 75% lower cost than traditional providers.</p>
+                    <p>Perfect for global organizations, multilingual applications, or teams looking to expand AI capabilities without proportional budget increases.</p>
+                </div>
+                <div>
+                    <ul class="features-list">
+                        <li>75% cost savings vs industry standard</li>
+                        <li>100+ language support</li>
+                        <li>Global model availability</li>
+                        <li>Enterprise-grade reliability</li>
+                        <li>Easy model switching</li>
+                        <li>Full API compatibility</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tiers-section">
+            <h2>6 Evolution Tiers (v1-v6)</h2>
+            <div class="tiers-grid">
+                <div class="tier-card"><div class="tier-name">v1</div><div class="tier-desc">Original</div><div class="tier-price">$39</div></div>
+                <div class="tier-card"><div class="tier-name">v2</div><div class="tier-desc">A/B Test</div><div class="tier-price">$42</div></div>
+                <div class="tier-card"><div class="tier-name">v3</div><div class="tier-desc">Psychology</div><div class="tier-price">$45</div></div>
+                <div class="tier-card"><div class="tier-name">v4</div><div class="tier-desc">Premium</div><div class="tier-price">$49</div></div>
+                <div class="tier-card"><div class="tier-name">v5</div><div class="tier-desc">Strategic</div><div class="tier-price">$54</div></div>
+                <div class="tier-card"><div class="tier-name">v6</div><div class="tier-desc">Ultimate</div><div class="tier-price">$59</div></div>
+            </div>
+        </div>
+        <div class="platform-section">
+            <h2>Pricing by Platform</h2>
+            <div class="platforms-grid">
+                <div class="platform-card">
+                    <div class="platform-name">🛒 Gumroad</div>
+                    <div class="platform-tiers">
+                        <div class="platform-tier"><span class="tier-name-small">v1-v3</span><span class="tier-price-small">$39-45</span></div>
+                        <div class="platform-tier"><span class="tier-name-small">v4-v5</span><span class="tier-price-small">$49-54</span></div>
+                        <div class="platform-tier"><span class="tier-name-small">v6</span><span class="tier-price-small">$59</span></div>
+                    </div>
+                    <button class="platform-button">View on Gumroad</button>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-name">💻 Codester</div>
+                    <div class="platform-tiers">
+                        <div class="platform-tier"><span class="tier-name-small">Basic</span><span class="tier-price-small">$39-45</span></div>
+                        <div class="platform-tier"><span class="tier-name-small">Pro</span><span class="tier-price-small">$49-54</span></div>
+                        <div class="platform-tier"><span class="tier-name-small">Enterprise</span><span class="tier-price-small">$59</span></div>
+                    </div>
+                    <button class="platform-button">View on Codester</button>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-name">💳 Payhip</div>
+                    <div class="platform-tiers">
+                        <div class="platform-tier"><span class="tier-name-small">Starter</span><span class="tier-price-small">$39-45</span></div>
+                        <div class="platform-tier"><span class="tier-name-small">Professional</span><span class="tier-price-small">$49-54</span></div>
+                        <div class="platform-tier"><span class="tier-name-small">Premium</span><span class="tier-price-small">$59</span></div>
+                    </div>
+                    <button class="platform-button">View on Payhip</button>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-name">🎁 Sellfy</div>
+                    <div class="platform-tiers">
+                        <div class="platform-tier"><span class="tier-name-small">All Tiers</span><span class="tier-price-small">$39-59</span></div>
+                        <div class="platform-tier"><span class="tier-name-small">Support</span><span class="tier-price-small">Included</span></div>
+                        <div class="platform-tier"><span class="tier-name-small">Updates</span><span class="tier-price-small">Lifetime</span></div>
+                    </div>
+                    <button class="platform-button">View on Sellfy</button>
+                </div>
+            </div>
+        </div>
+        <div class="use-cases">
+            <h2>Perfect For</h2>
+            <div class="use-cases-grid">
+                <div class="use-case"><div class="use-case-title">Global Teams</div><div class="use-case-desc">Deploy to 100+ countries with native language support</div></div>
+                <div class="use-case"><div class="use-case-title">Cost Optimization</div><div class="use-case-desc">Save 75% on AI costs vs standard providers</div></div>
+                <div class="use-case"><div class="use-case-title">Multilingual Apps</div><div class="use-case-desc">Single integration handles any language</div></div>
+                <div class="use-case"><div class="use-case-title">Emerging Markets</div><div class="use-case-desc">Affordable AI for growth in new regions</div></div>
+                <div class="use-case"><div class="use-case-title">Scaling Quickly</div><div class="use-case-desc">Expand capabilities without budget constraints</div></div>
+                <div class="use-case"><div class="use-case-title">Enterprise Scale</div><div class="use-case-desc">Reliable 99.9% uptime with SLA support</div></div>
+            </div>
+        </div>
+        <div class="cta-section">
+            <h2>Expand Your Global Reach</h2>
+            <p>75% cost savings + 100+ languages = unstoppable growth</p>
+            <button class="cta-button" onclick="document.querySelector('.platform-section').scrollIntoView({behavior: 'smooth'})">Choose Your Tier</button>
+            <button class="cta-button" onclick="window.location.href='quiz.html'">Get Recommendation</button>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">← Main Dashboard</a>
+            <a href="products.html">All Products</a>
+            <a href="bundle-intelligence.html">Related: Intelligence Bundle</a>
+        </div>
+    </div>
+</body>
+</html>
